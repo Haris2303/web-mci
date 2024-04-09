@@ -19,18 +19,47 @@ class BackgroundTest extends TestCase
     {
         $this->seed(AdminSeeder::class);
 
-        $user = User::where('email', 'admin@example.com')->first();
-
-        Auth::login($user);
-
         $response = $this->post('/background', [
             'content' => 'Ini latar belakang',
-            'user_id' => $user->id
+        ], [
+            "Authorization" => "token123"
         ]);
 
         Log::info(json_encode($response, JSON_PRETTY_PRINT));
 
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
+    }
+
+    public function testCreateUnauthorized(): void
+    {
+        $this->seed(AdminSeeder::class);
+
+        $response = $this->post('/background', [
+            'content' => 'Ini latar belakang',
+        ], [
+            "Authorization" => "salah"
+        ]);
+
+        Log::info(json_encode($response, JSON_PRETTY_PRINT));
+
+        $response->assertStatus(401);
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testCreateRequestInvalid(): void
+    {
+        $this->seed(AdminSeeder::class);
+
+        $response = $this->post('/background', [
+            'content' => '',
+        ], [
+            "Authorization" => "token123"
+        ]);
+
+        Log::info(json_encode($response, JSON_PRETTY_PRINT));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
     }
 }

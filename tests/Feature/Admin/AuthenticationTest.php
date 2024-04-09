@@ -18,9 +18,32 @@ class AuthenticationTest extends TestCase
         $response = $this->post('/admins/login', [
             'email' => 'admin@example.com',
             'password' => 'admin12345',
-            'remember' => true
         ]);
 
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testLoginFailed()
+    {
+        $this->seed(AdminSeeder::class);
+        $response = $this->post('/admins/login', [
+            'email' => 'admin@example.com',
+            'password' => 'salah',
+        ]);
+
+        $response->assertSessionHasErrors();
+    }
+
+    public function testLogoutSuccess()
+    {
+        $this->testLoginSuccess();
+
+        $response = $this->post('/logout', [
+            'email' => 'admin@example.com',
+            'password' => 'admin12345',
+        ]);
+
+        $response->assertStatus(401);
         $response->assertSessionHasNoErrors();
     }
 }

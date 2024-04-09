@@ -26,14 +26,11 @@ class BackgroundController extends Controller
         return view('admin.background.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(BackgroundRequest $request): RedirectResponse
     {
-        $request->validate([
-            'content' => ['required', 'string'],
-            'user_id' => ['required']
-        ]);
+        $request->validated();
 
-        $this->backgroundService->save($request->user_id, $request->content);
+        $this->backgroundService->save(Auth::user()->id, $request->content);
 
         return redirect()->to('/dashboard/background')->with('success', 'Data berhasil');
     }

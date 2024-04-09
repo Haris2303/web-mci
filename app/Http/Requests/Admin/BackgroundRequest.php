@@ -23,7 +23,6 @@ class BackgroundRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string'],
-            'user_id' => ['required']
         ];
     }
 }
