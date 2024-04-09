@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\User;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\BackgroundSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,9 @@ class BackgroundTest extends TestCase
      */
     public function testSuccess(): void
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([AdminSeeder::class, BackgroundSeeder::class]);
 
-        $response = $this->post('/background', [
+        $response = $this->put('/background', [
             'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "token123"
@@ -31,11 +32,11 @@ class BackgroundTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    public function testCreateUnauthorized(): void
+    public function testUpdateUnauthorized(): void
     {
         $this->seed(AdminSeeder::class);
 
-        $response = $this->post('/background', [
+        $response = $this->put('/background', [
             'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "salah"
@@ -47,11 +48,11 @@ class BackgroundTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    public function testCreateRequestInvalid(): void
+    public function testUpdateRequestInvalid(): void
     {
         $this->seed(AdminSeeder::class);
 
-        $response = $this->post('/background', [
+        $response = $this->put('/background', [
             'content' => '',
         ], [
             "Authorization" => "token123"

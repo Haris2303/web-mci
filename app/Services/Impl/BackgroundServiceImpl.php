@@ -8,12 +8,14 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 class BackgroundServiceImpl implements BackgroundService
 {
-    public function save(int $user_id, string $content): void
+    public function change(int $user_id, string $content): void
     {
-        $background = new Background([
+        $background = Background::firstOrNew([], [
             'content' => $content,
-            'user_id' => $user_id,
+            'user_id' => $user_id
         ]);
+        // $background->content = $content;
+        // $background->user_id = $user_id;
         $background->save();
     }
 }

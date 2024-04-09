@@ -6,5 +6,5 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 interface BackgroundService
 {
-    function save(int $user_id, string $content): void;
+    function change(int $user_id, string $content): void;
 }

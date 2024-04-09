@@ -11,8 +11,8 @@ Route::middleware(\App\Http\Middleware\DashboardAuthMiddleware::class)->group(fu
         '/dashboard/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'create']
     )->name('dashboard.background.create');
-    Route::post(
+    Route::put(
         '/background',
-        [\App\Http\Controllers\Admin\BackgroundController::class, 'store']
-    )->name('backgrzound.store');
+        [\App\Http\Controllers\Admin\BackgroundController::class, 'update']
+    )->name('backgrzound.update');
 });
