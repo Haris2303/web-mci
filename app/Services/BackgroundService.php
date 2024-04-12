@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Http\Requests\Admin\BackgroundRequest;
 
 interface BackgroundService
 {
-    function change(int $user_id, string $content): void;
+    function change(BackgroundRequest $request): void;
 }

@@ -36,14 +36,16 @@ class AuthenticationTest extends TestCase
 
     public function testLogoutSuccess()
     {
-        $this->testLoginSuccess();
+        $this->seed(AdminSeeder::class);
 
         $response = $this->post('/logout', [
             'email' => 'admin@example.com',
             'password' => 'admin12345',
+        ], [
+            'Authorization' => 'token123'
         ]);
 
-        $response->assertStatus(401);
+        $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
     }
 }

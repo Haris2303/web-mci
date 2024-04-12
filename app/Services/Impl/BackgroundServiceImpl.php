@@ -2,20 +2,20 @@
 
 namespace App\Services\Impl;
 
+use App\Http\Requests\Admin\BackgroundRequest;
 use App\Models\Background;
 use App\Services\BackgroundService;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class BackgroundServiceImpl implements BackgroundService
 {
-    public function change(int $user_id, string $content): void
+    public function change(BackgroundRequest $request): void
     {
-        $background = Background::firstOrNew([], [
-            'content' => $content,
-            'user_id' => $user_id
+        $background = Background::updateOrCreate([], [
+            'content' => $request['content'],
+            'user_id' => Auth::id()
         ]);
-        // $background->content = $content;
-        // $background->user_id = $user_id;
         $background->save();
     }
 }

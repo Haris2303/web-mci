@@ -8,3 +8,5 @@ select * from users
 
 
 select * from background;
+
+select * from vision_misions

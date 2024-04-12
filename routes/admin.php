@@ -14,5 +14,9 @@ Route::middleware(\App\Http\Middleware\DashboardAuthMiddleware::class)->group(fu
     Route::put(
         '/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'update']
-    )->name('backgrzound.update');
+    )->name('background.update');
+    Route::put(
+        '/vision-mision',
+        [\App\Http\Controllers\Admin\VisionMisionController::class, 'update']
+    )->name('visionmision.update');
 });

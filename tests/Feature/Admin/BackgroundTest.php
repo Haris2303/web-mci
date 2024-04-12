@@ -13,9 +13,6 @@ use Tests\TestCase;
 
 class BackgroundTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
     public function testSuccess(): void
     {
         $this->seed([AdminSeeder::class, BackgroundSeeder::class]);

@@ -8,9 +8,6 @@ use App\Models\Background;
 use App\Services\BackgroundService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class BackgroundController extends Controller
 {
@@ -30,7 +27,7 @@ class BackgroundController extends Controller
     {
         $request->validated();
 
-        $this->backgroundService->change(Auth::user()->id, $request->content);
+        $this->backgroundService->change($request);
 
         return redirect()->to('/dashboard/background')->with('success', 'Data berhasil');
     }
