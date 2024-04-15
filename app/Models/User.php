@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -21,8 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'status',
+        'is_active',
     ];
 
     /**
@@ -48,8 +48,30 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Establishes a many-to-many relationship between User and Role models.
+     * This relationship is facilitated through the 'user_roles' pivot table, linking 'user_id' and 'role_id'.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, "user_roles", "user_id", "role_id");
+    }
+
+    /**
+     * Defines a one-to-one relationship between User and Background models.
+     * background just has one column, identified by 'user_id' in the Background model.
+     */
     public function background(): HasOne
     {
         return $this->hasOne(Background::class, 'user_id', 'id');
+    }
+
+    /**
+     * Defines a one-to-one relationship between User and VisionMision models.
+     * vision and mission just has one column, identified by 'user_id' in the VisionMision model.
+     */
+    public function visionMision(): HasOne
+    {
+        return $this->hasOne(VisionMision::class, 'user_id', 'id');
     }
 }

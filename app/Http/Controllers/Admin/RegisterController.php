@@ -30,8 +30,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin',
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         event(new Registered($admin));
