@@ -20,13 +20,12 @@ class BackgroundTest extends TestCase
         $response = $this->put('/background', [
             'content' => 'Ini latar belakang',
         ], [
-            "Authorization" => "token123"
+            "Authorization" => "token12"
         ]);
-
-        Log::info(json_encode($response, JSON_PRETTY_PRINT));
 
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
+        $response->assertSessionHas('success', 'Data berhasil');
     }
 
     public function testUpdateUnauthorized(): void

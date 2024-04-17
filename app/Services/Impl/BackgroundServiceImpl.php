@@ -12,7 +12,7 @@ class BackgroundServiceImpl implements BackgroundService
 {
     public function change(BackgroundRequest $request): void
     {
-        $background = Background::updateOrCreate([], [
+        $background = Background::query()->updateOrCreate([], [
             'content' => $request['content'],
             'user_id' => Auth::id()
         ]);
