@@ -13,3 +13,5 @@ select * from vision_misions
 select * from projects
 
 select * from devisions
+
+select * from leadership_structures

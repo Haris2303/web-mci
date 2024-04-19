@@ -36,4 +36,7 @@ Route::middleware('auth:token')->group(function () {
     Route::delete('/devisions/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'destroy'])
         ->where('id', '[0-9]+')
         ->name('devision.delete');
+
+    Route::put('/leadership_structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
+        ->name('leadership-structre.upsert');
 });

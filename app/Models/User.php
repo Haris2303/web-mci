@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Devision::class, 'user_id', 'id');
     }
+
+    public function leadership_structure(): HasOne
+    {
+        return $this->hasOne(LeadershipStructure::class, 'user_id', 'id');
+    }
 }
