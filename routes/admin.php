@@ -52,4 +52,14 @@ Route::middleware('auth:token')->group(function () {
 
     // About Us
     Route::patch('/about_us', [\App\Http\Controllers\Admin\AboutUsController::class, 'upsert'])->name('about-us.create');
+
+    // Cooperations
+    Route::post('/cooperations', [\App\Http\Controllers\Admin\CooperationController::class, 'store'])
+        ->name('cooperation.store');
+    Route::put('/cooperations/{id}', [\App\Http\Controllers\Admin\CooperationController::class, 'update'])
+        ->where('id', '[0-9]+')
+        ->name('cooperation.update');
+    Route::delete('/cooperations/{id}', [\App\Http\Controllers\Admin\CooperationController::class, 'destroy'])
+        ->where('id', '[0-9]+')
+        ->name('cooperation.delete');
 });

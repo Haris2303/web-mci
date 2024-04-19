@@ -19,3 +19,5 @@ select * from leadership_structures
 select * from galleries
 
 select * from about_us
+
+select * from cooperations

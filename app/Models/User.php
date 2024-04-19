@@ -108,4 +108,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(AboutUs::class, 'user_id', 'id');
     }
+
+    public function cooperations(): HasMany
+    {
+        return $this->hasMany(Cooperation::class, 'user_id', 'id');
+    }
 }
