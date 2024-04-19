@@ -27,4 +27,13 @@ Route::middleware('auth:token')->group(function () {
         ->name('project.update');
     Route::delete('/projects/{slug}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])
         ->name('project.delete');
+
+    Route::post('/devisions', [\App\Http\Controllers\Admin\DevisionController::class, 'store'])
+        ->name('devision.create');
+    Route::put('/devisions/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'update'])
+        ->where('id', '[0-9]+')
+        ->name('devision.update');
+    Route::delete('/devisions/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'destroy'])
+        ->where('id', '[0-9]+')
+        ->name('devision.delete');
 });

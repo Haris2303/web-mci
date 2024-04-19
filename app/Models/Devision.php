@@ -6,16 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Background extends Model
+class Devision extends Model
 {
-    use HasFactory;
-
-    protected $table = 'background';
-
-    protected $fillable = ['content', 'user_id'];
+    protected $table = 'devisions';
+    protected $fillable = ['name', 'content'];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Background::class, 'user_id', 'id');
+        return $this->belongsTo(Devision::class, 'user_id', 'id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VisionMision extends Model
 {
@@ -22,4 +23,9 @@ class VisionMision extends Model
      * @var array<int, string>
      */
     protected $fillable = ['content'];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(VisionMision::class, 'user_id', 'id');
+    }
 }

@@ -84,4 +84,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class, 'user_id', 'id');
     }
+
+    /**
+     * Defines a one-to-many relationship between User and Devision models.
+     * Devisions has many column, identified by 'user_id' in the Devision model.
+     */
+    public function devisions(): HasMany
+    {
+        return $this->hasMany(Devision::class, 'user_id', 'id');
+    }
 }
