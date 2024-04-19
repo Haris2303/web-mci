@@ -94,7 +94,7 @@ class User extends Authenticatable
         return $this->hasMany(Devision::class, 'user_id', 'id');
     }
 
-    public function leadership_structure(): HasOne
+    public function leadershipStructure(): HasOne
     {
         return $this->hasOne(LeadershipStructure::class, 'user_id', 'id');
     }
@@ -102,5 +102,10 @@ class User extends Authenticatable
     public function galleries(): HasMany
     {
         return $this->hasMany(Gallery::class, 'user_id', 'id');
+    }
+
+    public function aboutUs(): HasOne
+    {
+        return $this->hasOne(AboutUs::class, 'user_id', 'id');
     }
 }

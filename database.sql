@@ -17,3 +17,5 @@ select * from devisions
 select * from leadership_structures
 
 select * from galleries
+
+select * from about_us

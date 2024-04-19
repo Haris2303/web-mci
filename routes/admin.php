@@ -11,12 +11,12 @@ Route::middleware('auth:token')->group(function () {
         '/dashboard/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'create']
     )->name('dashboard.background.create');
-    Route::put(
+    Route::patch(
         '/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'update']
     )->name('background.update');
 
-    Route::put(
+    Route::patch(
         '/vision-mision',
         [\App\Http\Controllers\Admin\VisionMisionController::class, 'update']
     )->name('visionmision.update');
@@ -40,7 +40,7 @@ Route::middleware('auth:token')->group(function () {
         ->name('devision.delete');
 
     // Leadership Structure
-    Route::put('/leadership_structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
+    Route::patch('/leadership_structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
         ->name('leadership-structre.upsert');
 
     // Gallery
@@ -49,4 +49,7 @@ Route::middleware('auth:token')->group(function () {
     Route::delete('/galleries/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'destroy'])
         ->where('id', '[0-9]+')
         ->name('gallery.delete');
+
+    // About Us
+    Route::patch('/about_us', [\App\Http\Controllers\Admin\AboutUsController::class, 'upsert'])->name('about-us.create');
 });

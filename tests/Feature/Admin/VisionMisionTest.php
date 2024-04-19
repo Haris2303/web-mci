@@ -14,7 +14,7 @@ class VisionMisionTest extends TestCase
     {
         $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
 
-        $response = $this->put('/vision-mision', [
+        $response = $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'
         ], [
             'Authorization' => 'token123'
@@ -28,7 +28,7 @@ class VisionMisionTest extends TestCase
     {
         $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
 
-        $this->put('/vision-mision', [
+        $this->patch('/vision-mision', [
             'content' => ''
         ], [
             'Authorization' => 'token123'
@@ -39,7 +39,7 @@ class VisionMisionTest extends TestCase
     {
         $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
 
-        $this->put('/vision-mision', [
+        $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'
         ])->assertStatus(401);
     }

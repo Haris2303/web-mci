@@ -20,7 +20,7 @@ class LeadershipStructureTest extends TestCase
 
         $file = UploadedFile::fake()->image('leadership.jpg');
 
-        $this->put('/leadership_structures', [
+        $this->patch('/leadership_structures', [
             'image' => $file,
             'description' => 'Ini adalah deskripsi'
         ], [
@@ -36,7 +36,7 @@ class LeadershipStructureTest extends TestCase
 
         $file = UploadedFile::fake()->image('leadership.jpg');
 
-        $this->put('/leadership_structures', [
+        $this->patch('/leadership_structures', [
             'image' => $file,
             'description' => ''
         ], [
@@ -52,7 +52,7 @@ class LeadershipStructureTest extends TestCase
 
         $file = UploadedFile::fake()->image('leadership.jpg');
 
-        $this->put('/leadership_structures', [
+        $this->patch('/leadership_structures', [
             'image' => $file,
             'description' => 'Ini deskripsi'
         ], [
@@ -68,7 +68,7 @@ class LeadershipStructureTest extends TestCase
 
         $file = UploadedFile::fake()->image('leadership.jpg');
 
-        $this->put('/leadership_structures', [
+        $this->patch('/leadership_structures', [
             'image' => $file,
             'description' => 'Ini deskripsi'
         ], [

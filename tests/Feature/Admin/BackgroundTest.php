@@ -17,7 +17,7 @@ class BackgroundTest extends TestCase
     {
         $this->seed([AdminSeeder::class, BackgroundSeeder::class]);
 
-        $response = $this->put('/background', [
+        $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "token123"
@@ -32,7 +32,7 @@ class BackgroundTest extends TestCase
     {
         $this->seed(AdminSeeder::class);
 
-        $response = $this->put('/background', [
+        $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "salah"
@@ -48,7 +48,7 @@ class BackgroundTest extends TestCase
     {
         $this->seed(AdminSeeder::class);
 
-        $response = $this->put('/background', [
+        $response = $this->patch('/background', [
             'content' => '',
         ], [
             "Authorization" => "token123"
