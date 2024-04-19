@@ -15,3 +15,5 @@ select * from projects
 select * from devisions
 
 select * from leadership_structures
+
+select * from galleries

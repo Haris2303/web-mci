@@ -21,6 +21,7 @@ Route::middleware('auth:token')->group(function () {
         [\App\Http\Controllers\Admin\VisionMisionController::class, 'update']
     )->name('visionmision.update');
 
+    // Project
     Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])
         ->name('project.create');
     Route::put('/projects/{slug}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])
@@ -28,6 +29,7 @@ Route::middleware('auth:token')->group(function () {
     Route::delete('/projects/{slug}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])
         ->name('project.delete');
 
+    // Devision
     Route::post('/devisions', [\App\Http\Controllers\Admin\DevisionController::class, 'store'])
         ->name('devision.create');
     Route::put('/devisions/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'update'])
@@ -37,6 +39,14 @@ Route::middleware('auth:token')->group(function () {
         ->where('id', '[0-9]+')
         ->name('devision.delete');
 
+    // Leadership Structure
     Route::put('/leadership_structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
         ->name('leadership-structre.upsert');
+
+    // Gallery
+    Route::post('/galleries', [\App\Http\Controllers\Admin\GalleryController::class, 'store'])
+        ->name('gallery.create');
+    Route::delete('/galleries/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'destroy'])
+        ->where('id', '[0-9]+')
+        ->name('gallery.delete');
 });

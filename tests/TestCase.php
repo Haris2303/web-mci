@@ -16,6 +16,7 @@ abstract class TestCase extends BaseTestCase
         DB::delete('DELETE FROM projects');
         DB::delete('DELETE FROM devisions');
         DB::delete('DELETE FROM leadership_structures');
+        DB::delete('DELETE FROM galleries');
         DB::delete('DELETE FROM users');
     }
 }

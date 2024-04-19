@@ -98,4 +98,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(LeadershipStructure::class, 'user_id', 'id');
     }
+
+    public function galleries(): HasMany
+    {
+        return $this->hasMany(Gallery::class, 'user_id', 'id');
+    }
 }
