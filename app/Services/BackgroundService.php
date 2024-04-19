@@ -6,5 +6,5 @@ use App\Http\Requests\Admin\BackgroundRequest;
 
 interface BackgroundService
 {
-    function change(BackgroundRequest $request): void;
+    function upsert(BackgroundRequest $request): void;
 }

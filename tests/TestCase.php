@@ -13,6 +13,7 @@ abstract class TestCase extends BaseTestCase
 
         DB::delete('DELETE FROM background');
         DB::delete('DELETE FROM vision_misions');
+        DB::delete('DELETE FROM projects');
         DB::delete('DELETE FROM users');
     }
 }

@@ -9,6 +9,17 @@ class VisionMision extends Model
 {
     use HasFactory;
 
-    protected $table = 'vision_misions'; // Nama tabel di database
-    protected $fillable = ['content']; // Kolom yang bisa diisi
+    /**
+     * The attributes that are table name.
+     *
+     * @var string
+     */
+    protected $table = 'vision_misions';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = ['content'];
 }

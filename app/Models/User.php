@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -73,5 +74,14 @@ class User extends Authenticatable
     public function visionMision(): HasOne
     {
         return $this->hasOne(VisionMision::class, 'user_id', 'id');
+    }
+
+    /**
+     * Defines a one-to-many relationship between User and Project models.
+     * Projects has many column, identified by 'user_id' in the Project model.
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'user_id', 'id');
     }
 }

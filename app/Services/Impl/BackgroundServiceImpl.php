@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BackgroundServiceImpl implements BackgroundService
 {
-    public function change(BackgroundRequest $request): void
+    public function upsert(BackgroundRequest $request): void
     {
         $background = Background::query()->updateOrCreate([], [
             'content' => $request['content'],

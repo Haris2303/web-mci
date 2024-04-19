@@ -20,7 +20,7 @@ class VisionMisionController extends Controller
     {
         $request->validated();
 
-        $this->visionMisionService->change($request);
+        $this->visionMisionService->upsert($request);
 
         return redirect()->to('/dashboard/visionmision')->with('success', 'Data berhasil diubah');
     }

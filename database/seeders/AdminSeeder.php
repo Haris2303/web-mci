@@ -21,5 +21,13 @@ class AdminSeeder extends Seeder
             'remember_token' => 'token123',
             'is_active' => true
         ]);
+
+        User::create([
+            'name' => 'admin2',
+            'email' => 'admin2@example.com',
+            'password' => Hash::make('admin12345'),
+            'remember_token' => 'admin2',
+            'is_active' => true
+        ]);
     }
 }

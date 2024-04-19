@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VisionMisionServiceImpl implements VisionMisionService
 {
-    public function change(VisionMisionRequest $data): void
+    public function upsert(VisionMisionRequest $data): void
     {
         $visionMision = VisionMision::updateOrCreate([], [
             'content' => $data['content'],

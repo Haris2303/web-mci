@@ -20,7 +20,7 @@ class BackgroundTest extends TestCase
         $response = $this->put('/background', [
             'content' => 'Ini latar belakang',
         ], [
-            "Authorization" => "token12"
+            "Authorization" => "token123"
         ]);
 
         $response->assertStatus(302);

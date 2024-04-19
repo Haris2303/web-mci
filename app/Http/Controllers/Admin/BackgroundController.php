@@ -31,7 +31,7 @@ class BackgroundController extends Controller
         $request->validated();
 
         DB::transaction(function () use ($request) {
-            $this->backgroundService->change($request);
+            $this->backgroundService->upsert($request);
         });
 
         return redirect()->to('/dashboard/background')->with('success', 'Data berhasil');
