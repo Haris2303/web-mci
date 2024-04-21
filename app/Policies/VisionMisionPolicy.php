@@ -2,19 +2,16 @@
 
 namespace App\Policies;
 
-use App\Models\Background;
 use App\Models\User;
+use App\Models\VisionMision;
 use Illuminate\Auth\Access\Response;
 
-class BackgroundPolicy
+class VisionMisionPolicy
 {
-    /**
-     * Determine the user can all access the model.
-     */
     public function before(User $user, string $ability)
     {
         foreach ($user->roles[0]->permissions as $permission) {
-            if ($permission->name === 'upsert-background') {
+            if ($permission->name === 'upsert-vision-mision') {
                 return true;
             }
         }
@@ -23,7 +20,7 @@ class BackgroundPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Background $background): bool
+    public function view(User $user, VisionMision $visionMision): bool
     {
         return false;
     }
@@ -31,7 +28,7 @@ class BackgroundPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Background $background): bool
+    public function update(User $user, VisionMision $visionMision): bool
     {
         return false;
     }

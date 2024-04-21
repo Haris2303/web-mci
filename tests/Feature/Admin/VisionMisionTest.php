@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\User;
+use App\Models\VisionMision;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\VisionMisionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,7 +16,7 @@ class VisionMisionTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
 
         $response = $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'
