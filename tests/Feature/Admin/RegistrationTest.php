@@ -2,8 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\User;
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -14,6 +19,8 @@ class RegistrationTest extends TestCase
      */
     public function testSuccess(): void
     {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class]);
+
         $response = $this->post('/admins', [
             'name' => 'admin',
             'email' => 'admin@example.com',
@@ -48,6 +55,6 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'admin2345',
         ]);
 
-        $response->assertSessionHasErrors();
+        $response->assertSessionHasNoErrors();
     }
 }

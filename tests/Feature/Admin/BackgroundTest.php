@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Background;
 use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\BackgroundSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,22 +18,28 @@ class BackgroundTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
+
+        $background = Background::first();
+        $user = User::where('email', 'admin@example.com')->first();
+
+        $this->assertTrue($user->can('update', $background));
 
         $response = $this->patch('/background', [
-            'content' => 'Ini latar belakang ketua',
+            'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "admin"
         ]);
 
         $response->assertStatus(302);
+        $response->assertRedirect('/dashboard/background');
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('success', 'Data berhasil');
     }
 
     public function testUpdateUnauthorized(): void
     {
-        $this->seed(RoleSeeder::class, AdminSeeder::class);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
 
         $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
@@ -47,7 +55,7 @@ class BackgroundTest extends TestCase
 
     public function testUpdateRequestInvalid(): void
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
 
         $response = $this->patch('/background', [
             'content' => '',

@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class BackgroundController extends Controller
@@ -26,8 +27,14 @@ class BackgroundController extends Controller
         return view('admin.background.create');
     }
 
-    public function update(BackgroundRequest $request): RedirectResponse
+    public function update(BackgroundRequest $request, Background $background): RedirectResponse
     {
+        // check permissions
+        if (!Gate::allows('update', $background)) {
+            abort(403);
+        }
+
+        // check validation
         $request->validated();
 
         DB::transaction(function () use ($request) {

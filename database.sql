@@ -25,3 +25,7 @@ select * from cooperations
 select * from roles
 
 select * from user_roles
+
+select * from permissions
+
+select * from role_permissions
