@@ -29,7 +29,7 @@ class BackgroundPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Background $background): bool
+    public function create(User $user): bool
     {
         return false;
     }

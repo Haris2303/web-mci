@@ -23,13 +23,13 @@ Route::middleware(['auth:token'])->group(function () {
     )->name('dashboard.background.create');
     Route::patch(
         '/background',
-        [\App\Http\Controllers\Admin\BackgroundController::class, 'update']
-    )->name('background.update');
+        [\App\Http\Controllers\Admin\BackgroundController::class, 'upsert']
+    )->name('background.upsert');
 
     Route::patch(
         '/vision-mision',
-        [\App\Http\Controllers\Admin\VisionMisionController::class, 'update']
-    )->name('visionmision.update');
+        [\App\Http\Controllers\Admin\VisionMisionController::class, 'upsert']
+    )->name('visionmision.upsert');
 
     // Project
     Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])

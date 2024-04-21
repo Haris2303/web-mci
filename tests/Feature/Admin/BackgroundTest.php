@@ -11,6 +11,7 @@ use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -18,18 +19,15 @@ class BackgroundTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
-
-        $background = Background::first();
-        $user = User::where('email', 'admin@example.com')->first();
-
-        $this->assertTrue($user->can('update', $background));
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
         ], [
             "Authorization" => "admin"
         ]);
+
+        $this->assertTrue(Gate::allows('create', Background::class));
 
         $response->assertStatus(302);
         $response->assertRedirect('/dashboard/background');
@@ -67,5 +65,19 @@ class BackgroundTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+    }
+
+    public function testUpdateWithoutPermission(): void
+    {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
+
+        $response = $this->patch('/background', [
+            'content' => 'Ini adalah latar belakang',
+        ], [
+            "Authorization" => "ketua_ukm"
+        ]);
+
+        $response->assertStatus(403);
+        $response->assertSessionHasNoErrors();
     }
 }

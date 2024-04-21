@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\LeadershipStructure;
 use App\Models\User;
-use App\Models\VisionMision;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
 
-class VisionMisionPolicy
+class LeadershipStructurePolicy
 {
     public function before(User $user, string $ability)
     {
@@ -17,15 +16,23 @@ class VisionMisionPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view any models.
      */
-    public function view(User $user, VisionMision $visionMision): bool
+    public function viewAny(User $user): bool
     {
         return false;
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, LeadershipStructure $leadershipStructure): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {

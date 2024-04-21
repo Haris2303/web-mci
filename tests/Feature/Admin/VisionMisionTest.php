@@ -16,7 +16,7 @@ class VisionMisionTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         $response = $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'
@@ -26,6 +26,9 @@ class VisionMisionTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
+
+        $visionMision = VisionMision::first();
+        $this->assertEquals($visionMision->content, 'Ini adalah visi misi baru');
     }
 
     public function testUpdateRequestInvalid(): void
@@ -48,9 +51,9 @@ class VisionMisionTest extends TestCase
         ])->assertStatus(401);
     }
 
-    public function testUpdateNotPermission(): void
+    public function testUpdateWithoutPermission(): void
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
 
         $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'

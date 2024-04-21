@@ -36,8 +36,11 @@ class DevisionController extends Controller
         return redirect()->to('/dashboard/devisions')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function update(int $id, DevisionRequest $request, Devision $devision): RedirectResponse
+    public function update(int $id, DevisionRequest $request): RedirectResponse
     {
+        // get user by id
+        $devision = Devision::where('id', $id)->firstOrFail();
+
         // check permission
         Gate::authorize('update', $devision);
 
@@ -51,8 +54,11 @@ class DevisionController extends Controller
         return redirect()->to('/dashboard/devisions')->with('success', 'Data berhasil diubah');
     }
 
-    public function destroy(int $id, Devision $devision): RedirectResponse
+    public function destroy(int $id): RedirectResponse
     {
+        // get user by id
+        $devision = Devision::where('id', $id)->firstOrFail();
+
         // check permission
         Gate::authorize('delete', $devision);
 

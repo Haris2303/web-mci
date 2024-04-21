@@ -3,12 +3,15 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Devision;
+use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\DevisionSeeder;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Tests\TestCase;
 
 class DevisionTest extends TestCase
@@ -73,6 +76,8 @@ class DevisionTest extends TestCase
         ], [
             'Authorization' => 'admin'
         ])->assertStatus(302);
+
+        $this->assertTrue(Gate::allows('update', $devision));
     }
 
     public function testUpdateInvalid()
@@ -107,7 +112,10 @@ class DevisionTest extends TestCase
     {
         $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
-        $this->put("/devisions/1", [
+        $devision = Devision::first();
+        $id = $devision->id + 1;
+
+        $this->put("/devisions/$id", [
             'name' => 'Desain Grafis',
             'content' => 'Content Desain Grafis'
         ], [

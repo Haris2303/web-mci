@@ -8,14 +8,16 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class LeadershipStructureController extends Controller
 {
-
     public function upsert(Request $request): RedirectResponse
     {
+        Gate::authorize('create', LeadershipStructure::class);
+
         $credentials = $request->validate([
             'image' => ['required', 'file', 'image', 'max:1024'],
             'description' => ['required', 'string']

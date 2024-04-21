@@ -22,7 +22,7 @@ class VisionMision extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['content'];
+    protected $fillable = ['content', 'user_id'];
 
     public function user(): BelongsTo
     {

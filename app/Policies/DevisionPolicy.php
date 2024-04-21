@@ -5,12 +5,13 @@ namespace App\Policies;
 use App\Models\Devision;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class DevisionPolicy
 {
     public function before(User $user, string $ability)
     {
-        if ($user->roles[0]->name === 'admin') {
+        if ($user->roles[0]->name === 'superadmin') {
             return true;
         }
     }
@@ -20,6 +21,11 @@ class DevisionPolicy
      */
     public function viewAny(User $user): bool
     {
+        foreach ($user->roles[0]->permissions as $permission) {
+            if ($permission->name === 'viewAny-devision') {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -28,6 +34,13 @@ class DevisionPolicy
      */
     public function view(User $user, Devision $devision): bool
     {
+        if ($user->id === $devision->user_id) {
+            foreach ($user->roles[0]->permissions as $permission) {
+                if ($permission->name === 'view-devision') {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -36,6 +49,11 @@ class DevisionPolicy
      */
     public function create(User $user): bool
     {
+        foreach ($user->roles[0]->permissions as $permission) {
+            if ($permission->name === 'create-devision') {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -44,6 +62,14 @@ class DevisionPolicy
      */
     public function update(User $user, Devision $devision): bool
     {
+        if ($user->id === $devision->user_id) {
+            foreach ($user->roles[0]->permissions as $permission) {
+                if ($permission->name === 'update-devision') {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -52,6 +78,13 @@ class DevisionPolicy
      */
     public function delete(User $user, Devision $devision): bool
     {
+        if ($user->id === $devision->user_id) {
+            foreach ($user->roles[0]->permissions as $permission) {
+                if ($permission->name === 'delete-devision') {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -60,6 +93,13 @@ class DevisionPolicy
      */
     public function restore(User $user, Devision $devision): bool
     {
+        if ($user->id === $devision->user_id) {
+            foreach ($user->roles[0]->permissions as $permission) {
+                if ($permission->name === 'restore-devision') {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -68,6 +108,13 @@ class DevisionPolicy
      */
     public function forceDelete(User $user, Devision $devision): bool
     {
+        if ($user->id === $devision->user_id) {
+            foreach ($user->roles[0]->permissions as $permission) {
+                if ($permission->name === 'forceDelete-devision') {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

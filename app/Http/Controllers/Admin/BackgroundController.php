@@ -27,10 +27,10 @@ class BackgroundController extends Controller
         return view('admin.background.create');
     }
 
-    public function update(BackgroundRequest $request, Background $background): RedirectResponse
+    public function upsert(BackgroundRequest $request): RedirectResponse
     {
         // check permissions
-        if (!Gate::allows('update', $background)) {
+        if (!Gate::allows('create', Background::class)) {
             abort(403);
         }
 

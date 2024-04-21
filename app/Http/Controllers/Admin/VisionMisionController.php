@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\VisionMisionRequest;
 use App\Models\VisionMision;
 use App\Services\VisionMisionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class VisionMisionController extends Controller
@@ -18,14 +19,16 @@ class VisionMisionController extends Controller
         $this->visionMisionService = $visionMisionService;
     }
 
-    public function update(VisionMisionRequest $request, VisionMision $visionMision)
+    public function upsert(VisionMisionRequest $request)
     {
         // check permissions
-        Gate::authorize('update', $visionMision);
+        Gate::authorize('create', VisionMision::class);
 
         $request->validated();
 
-        $this->visionMisionService->upsert($request);
+        DB::transaction(function () use ($request) {
+            $this->visionMisionService->upsert($request);
+        });
 
         return redirect()->to('/dashboard/vision-mision')->with('success', 'Data berhasil diubah');
     }

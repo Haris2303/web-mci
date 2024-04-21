@@ -2,12 +2,17 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\LeadershipStructure;
+use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\LeadershipStructureSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -15,7 +20,7 @@ class LeadershipStructureTest extends TestCase
 {
     public function testUpsertSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('leadership');
 
@@ -27,6 +32,11 @@ class LeadershipStructureTest extends TestCase
         ], [
             'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
+
+        $this->assertTrue(Gate::allows('create', LeadershipStructure::class));
+
+        $data = LeadershipStructure::first();
+        $this->assertEquals($data->description, 'Ini adalah deskripsi');
     }
 
     public function testUpsertInvalid()
