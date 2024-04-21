@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\LeadershipStructureSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -14,7 +15,7 @@ class LeadershipStructureTest extends TestCase
 {
     public function testUpsertSuccess()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('leadership');
 
@@ -24,13 +25,13 @@ class LeadershipStructureTest extends TestCase
             'image' => $file,
             'description' => 'Ini adalah deskripsi'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 
     public function testUpsertInvalid()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('leadership');
 
@@ -40,13 +41,13 @@ class LeadershipStructureTest extends TestCase
             'image' => $file,
             'description' => ''
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testUpsertUnauthorized()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('leadership');
 
@@ -62,7 +63,7 @@ class LeadershipStructureTest extends TestCase
 
     public function testUpserSuccessForUpdate()
     {
-        $this->seed([AdminSeeder::class, LeadershipStructureSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, LeadershipStructureSeeder::class]);
 
         Storage::fake('leadership');
 
@@ -72,7 +73,7 @@ class LeadershipStructureTest extends TestCase
             'image' => $file,
             'description' => 'Ini deskripsi'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -14,7 +15,7 @@ class AuthenticationTest extends TestCase
      */
     public function testLoginSuccess(): void
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
         $response = $this->post('/admins/login', [
             'email' => 'admin@example.com',
             'password' => 'admin12345',
@@ -25,7 +26,7 @@ class AuthenticationTest extends TestCase
 
     public function testLoginFailed()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
         $response = $this->post('/admins/login', [
             'email' => 'admin@example.com',
             'password' => 'salah',
@@ -34,9 +35,21 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors();
     }
 
+    public function testLoginNotAdmin(): void
+    {
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $response = $this->post('/admins/login', [
+            'email' => 'admin@example.com',
+            'password' => 'admin12345',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
+    }
+
     public function testLogoutSuccess()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $response = $this->post('/logout', [
             'email' => 'admin@example.com',

@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use Database\Seeders\AboutUsSeeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -12,29 +13,29 @@ class AboutUsTest extends TestCase
 {
     public function testUpsertSuccess()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $this->patch('/about_us', [
             'content' => 'Ini adalah about'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 
     public function testUpsertInvalid()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $this->patch('/about_us', [
             'content' => ''
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testUpsertUnauthorized()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $this->patch('/about_us', [
             'content' => 'Ini adalah about'
@@ -45,12 +46,12 @@ class AboutUsTest extends TestCase
 
     public function testUpserSuccessForUpdate()
     {
-        $this->seed([AdminSeeder::class, AboutUsSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, AboutUsSeeder::class]);
 
         $this->patch('/about_us', [
             'content' => 'Ini adalah about baru'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\Gallery;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\GallerySeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -15,7 +16,7 @@ class GalleryTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('gallery');
         $file = UploadedFile::fake()->image('gallery.jpg');
@@ -23,24 +24,24 @@ class GalleryTest extends TestCase
         $this->post('/galleries', [
             'image' => $file
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 
     public function testCreateInvalid()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $this->post('/galleries', [
             'image' => ''
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testCreateUnauthorized()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('gallery');
         $file = UploadedFile::fake()->image('gallery.jpg');
@@ -54,21 +55,21 @@ class GalleryTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed([AdminSeeder::class, GallerySeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, GallerySeeder::class]);
 
         $gallery = Gallery::first();
 
         $this->delete("/galleries/$gallery->id", headers: [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302);
     }
 
     public function testDeleteNotFound()
     {
-        $this->seed([AdminSeeder::class, GallerySeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, GallerySeeder::class]);
 
         $this->delete("/galleries/1", headers: [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(404);
     }
 }

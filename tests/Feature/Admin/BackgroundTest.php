@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\BackgroundSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +16,12 @@ class BackgroundTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([AdminSeeder::class, BackgroundSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
 
         $response = $this->patch('/background', [
-            'content' => 'Ini latar belakang',
+            'content' => 'Ini latar belakang ketua',
         ], [
-            "Authorization" => "token123"
+            "Authorization" => "admin"
         ]);
 
         $response->assertStatus(302);
@@ -30,7 +31,7 @@ class BackgroundTest extends TestCase
 
     public function testUpdateUnauthorized(): void
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed(RoleSeeder::class, AdminSeeder::class);
 
         $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
@@ -46,12 +47,12 @@ class BackgroundTest extends TestCase
 
     public function testUpdateRequestInvalid(): void
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         $response = $this->patch('/background', [
             'content' => '',
         ], [
-            "Authorization" => "token123"
+            "Authorization" => "admin"
         ]);
 
         Log::info(json_encode($response, JSON_PRETTY_PRINT));

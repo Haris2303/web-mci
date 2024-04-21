@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\RoleSeeder;
 use Database\Seeders\VisionMisionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,12 +13,12 @@ class VisionMisionTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
 
         $response = $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ]);
 
         $response->assertStatus(302);
@@ -26,18 +27,18 @@ class VisionMisionTest extends TestCase
 
     public function testUpdateRequestInvalid(): void
     {
-        $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
 
         $this->patch('/vision-mision', [
             'content' => ''
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertSessionHasErrors();
     }
 
     public function testUpdateUnauthorized(): void
     {
-        $this->seed([AdminSeeder::class, VisionMisionSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
 
         $this->patch('/vision-mision', [
             'content' => 'Ini adalah visi misi baru'

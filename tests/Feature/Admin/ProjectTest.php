@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\Project;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\ProjectSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -16,7 +17,7 @@ class ProjectTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
 
@@ -29,13 +30,13 @@ class ProjectTest extends TestCase
             'description' => 'Deskripsi project',
             'type' => 'UKM'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 
     public function testCreateInvalid()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
 
@@ -47,13 +48,13 @@ class ProjectTest extends TestCase
             'description' => '',
             'type' => 'UKM'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testCreateUnauthorized()
     {
-        $this->seed(AdminSeeder::class);
+        $this->seed([RoleSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
         $file = UploadedFile::fake()->image('project.jpg');
@@ -68,7 +69,7 @@ class ProjectTest extends TestCase
 
     public function testCreateSlugIsExists()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         Storage::fake('project');
 
@@ -81,13 +82,13 @@ class ProjectTest extends TestCase
             'description' => 'Deskripsi project',
             'type' => 'UKM'
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testUpdateSuccess()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -102,13 +103,13 @@ class ProjectTest extends TestCase
             'description' => 'Deskripsi project Baru',
             'oldImage' => $project->image
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 
     public function testUpdateInvalid()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -119,13 +120,13 @@ class ProjectTest extends TestCase
             'description' => '',
             'oldImage' => $project->image
         ], [
-            'Authorization' => 'token123'
+            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasErrors();
     }
 
     public function testUpdateNotFound()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -140,7 +141,7 @@ class ProjectTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -151,7 +152,7 @@ class ProjectTest extends TestCase
 
     public function testDeleteNotFound()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $this->delete("/projects/salah", headers: [
             'Authorization' => 'admin2'
@@ -160,12 +161,12 @@ class ProjectTest extends TestCase
 
     public function testDeleteUnauthorized()
     {
-        $this->seed([AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
         $this->delete("/projects/$project->slug", headers: [
-            'Authorization' => 'admin'
+            'Authorization' => 'salah'
         ])->assertStatus(401);
     }
 }

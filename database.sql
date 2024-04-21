@@ -21,3 +21,7 @@ select * from galleries
 select * from about_us
 
 select * from cooperations
+
+select * from roles
+
+select * from user_roles

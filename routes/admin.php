@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/register', [\App\Http\Controllers\Admin\RegisterController::class, 'index'])->name('admin.register');
 Route::post('/admins', [\App\Http\Controllers\Admin\RegisterController::class, 'store'])->name('admin.store');
-Route::post('/admins/login', [\App\Http\Controllers\Admin\LoginController::class, 'store'])->name('admin.login');
+Route::get('/administrator/login', [LoginController::class, 'create']);
 
-Route::middleware('auth:token')->group(function () {
+Route::post('/admins/login', [\App\Http\Controllers\Admin\LoginController::class, 'store'])
+    ->middleware(\App\Http\Middleware\LoginAdminMiddleware::class)
+    ->name('admin.login');
+
+Route::middleware(['auth:token', \App\Http\Middleware\IsAdminMiddleware::class])->group(function () {
     Route::get(
         '/dashboard/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'create']
