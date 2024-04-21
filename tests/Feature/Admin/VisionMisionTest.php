@@ -47,4 +47,15 @@ class VisionMisionTest extends TestCase
             'content' => 'Ini adalah visi misi baru'
         ])->assertStatus(401);
     }
+
+    public function testUpdateNotPermission(): void
+    {
+        $this->seed([RoleSeeder::class, AdminSeeder::class, VisionMisionSeeder::class]);
+
+        $this->patch('/vision-mision', [
+            'content' => 'Ini adalah visi misi baru'
+        ], [
+            'Authorization' => 'ketua_ukm'
+        ])->assertStatus(403);
+    }
 }

@@ -13,10 +13,8 @@ class BackgroundPolicy
      */
     public function before(User $user, string $ability)
     {
-        foreach ($user->roles[0]->permissions as $permission) {
-            if ($permission->name === 'upsert-background') {
-                return true;
-            }
+        if ($user->roles[0]->name === 'admin') {
+            return true;
         }
     }
 

@@ -10,10 +10,8 @@ class VisionMisionPolicy
 {
     public function before(User $user, string $ability)
     {
-        foreach ($user->roles[0]->permissions as $permission) {
-            if ($permission->name === 'upsert-vision-mision') {
-                return true;
-            }
+        if ($user->roles[0]->name === 'admin') {
+            return true;
         }
     }
 

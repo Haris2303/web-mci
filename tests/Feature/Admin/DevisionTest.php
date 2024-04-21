@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\Devision;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\DevisionSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,7 +15,7 @@ class DevisionTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         $this->post('/devisions', [
             'name' => 'Programming',
@@ -26,7 +27,7 @@ class DevisionTest extends TestCase
 
     public function testCreateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         $this->post('/devisions', [
             'name' => '',
@@ -38,7 +39,7 @@ class DevisionTest extends TestCase
 
     public function testCreateUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         $this->post('/devisions', [
             'name' => 'Programming',
@@ -48,9 +49,21 @@ class DevisionTest extends TestCase
         ])->assertStatus(401);
     }
 
+    public function testCreateWithoutPermission()
+    {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
+
+        $this->post('/devisions', [
+            'name' => 'Programming',
+            'content' => 'Content Programming'
+        ], [
+            'Authorization' => 'ketua_ukm'
+        ])->assertStatus(403);
+    }
+
     public function testUpdateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $devision = Devision::first();
 
@@ -64,7 +77,7 @@ class DevisionTest extends TestCase
 
     public function testUpdateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $devision = Devision::first();
 
@@ -78,7 +91,7 @@ class DevisionTest extends TestCase
 
     public function testUpdateUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $devision = Devision::first();
 
@@ -92,7 +105,7 @@ class DevisionTest extends TestCase
 
     public function testUpdateIdNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $this->put("/devisions/1", [
             'name' => 'Desain Grafis',
@@ -102,9 +115,23 @@ class DevisionTest extends TestCase
         ])->assertStatus(404);
     }
 
+    public function testUpdateWithoutPermission()
+    {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+
+        $devision = Devision::first();
+
+        $this->put("/devisions/$devision->id", [
+            'name' => 'Desain Grafis',
+            'content' => 'Content Desain Grafis'
+        ], [
+            'Authorization' => 'ketua_ukm'
+        ])->assertStatus(403);
+    }
+
     public function testDeleteSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $devision = Devision::first();
 
@@ -115,7 +142,7 @@ class DevisionTest extends TestCase
 
     public function testDeleteNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $this->delete("/devisions/1", headers: [
             'Authorization' => 'admin'
@@ -124,12 +151,23 @@ class DevisionTest extends TestCase
 
     public function testDeleteUnauthorization()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
 
         $devision = Devision::first();
 
         $this->delete("/devisions/$devision->id", headers: [
             'Authorization' => 'salah'
         ])->assertStatus(401);
+    }
+
+    public function testDeleteWithoutPermission()
+    {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, DevisionSeeder::class]);
+
+        $devision = Devision::first();
+
+        $this->delete("/devisions/$devision->id", headers: [
+            'Authorization' => 'ketua_ukm'
+        ])->assertStatus(403);
     }
 }
