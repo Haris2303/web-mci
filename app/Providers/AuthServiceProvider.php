@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Models\Background;
 use App\Models\Cooperation;
 use App\Models\Devision;
+use App\Models\Gallery;
 use App\Models\LeadershipStructure;
 use App\Models\VisionMision;
 use App\Policies\BackgroundPolicy;
 use App\Policies\CooperationPolicy;
 use App\Policies\DevisionPolicy;
+use App\Policies\GalleryPolicy;
 use App\Policies\LeadershipStrcuturePolicy;
 use App\Policies\LeadershipStructurePolicy;
 use App\Policies\VisionMisionPolicy;
@@ -26,7 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         VisionMision::class => VisionMisionPolicy::class,
         Devision::class => DevisionPolicy::class,
         LeadershipStructure::class => LeadershipStructurePolicy::class,
-        Cooperation::class => CooperationPolicy::class
+        Cooperation::class => CooperationPolicy::class,
+        Gallery::class => GalleryPolicy::class
     ];
 
     /**

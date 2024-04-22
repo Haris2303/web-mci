@@ -125,6 +125,43 @@ class PermissionSeeder extends Seeder
         $permission->save();
         $permission->roles()->attach($role->id);
 
+        // permission gallery
+        $permission = new Permission();
+        $permission->name = 'viewAny-gallery';
+        $permission->description = 'Permizinan melihat semua galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'view-gallery';
+        $permission->description = 'Permizinan melihat detail galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'view-gallery';
+        $permission->description = 'Permizinan melihat detail galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'create-gallery';
+        $permission->description = 'Permizinan membuat galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'update-gallery';
+        $permission->description = 'Permizinan mengubah galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'delete-gallery';
+        $permission->description = 'Permizinan menghapus galeri website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
 
         // role leader
         $role = Role::where('name', 'leader')->first();
