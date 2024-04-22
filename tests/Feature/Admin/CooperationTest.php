@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\Cooperation;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\CooperationSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,7 +17,7 @@ class CooperationTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -31,7 +32,7 @@ class CooperationTest extends TestCase
 
     public function testCreateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -46,7 +47,7 @@ class CooperationTest extends TestCase
 
     public function testCreateUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -61,7 +62,7 @@ class CooperationTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -78,7 +79,7 @@ class CooperationTest extends TestCase
 
     public function testUpdateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -95,7 +96,7 @@ class CooperationTest extends TestCase
 
     public function testUpdateNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -114,7 +115,7 @@ class CooperationTest extends TestCase
 
     public function testUpdateUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         Storage::fake('coopeartions');
         $file = UploadedFile::fake('coopeartions')->image('cooperations.jpg');
@@ -133,7 +134,7 @@ class CooperationTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         $cooperation = Cooperation::first();
         $id = $cooperation->id;
@@ -145,7 +146,7 @@ class CooperationTest extends TestCase
 
     public function testDeleteNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         $cooperation = Cooperation::first();
         $id = $cooperation->id + 1;
@@ -157,7 +158,7 @@ class CooperationTest extends TestCase
 
     public function testDeleteUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, CooperationSeeder::class]);
+        $this->seed([RoleSeeder::class, AdminSeeder::class, PermissionSeeder::class, CooperationSeeder::class]);
 
         $cooperation = Cooperation::first();
         $id = $cooperation->id;

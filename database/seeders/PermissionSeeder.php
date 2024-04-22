@@ -82,6 +82,49 @@ class PermissionSeeder extends Seeder
         $permission->save();
         $permission->roles()->attach($role->id);
 
+        // permission cooperation
+        $permission = new Permission();
+        $permission->name = 'viewAny-cooperation';
+        $permission->description = 'Permizinan melihat semua kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'view-cooperation';
+        $permission->description = 'Permizinan melihat kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'create-cooperation';
+        $permission->description = 'Permizinan membuat kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'update-cooperation';
+        $permission->description = 'Permizinan mengubah kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'delete-cooperation';
+        $permission->description = 'Permizinan menghapus kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'restore-cooperation';
+        $permission->description = 'Permizinan memulihkan kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'forceDelete-cooperation';
+        $permission->description = 'Permizinan delete permanen kerja sama website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
 
         // role leader
         $role = Role::where('name', 'leader')->first();
