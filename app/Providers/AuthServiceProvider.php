@@ -7,6 +7,7 @@ use App\Models\Cooperation;
 use App\Models\Devision;
 use App\Models\Gallery;
 use App\Models\LeadershipStructure;
+use App\Models\Project;
 use App\Models\VisionMision;
 use App\Policies\BackgroundPolicy;
 use App\Policies\CooperationPolicy;
@@ -14,6 +15,7 @@ use App\Policies\DevisionPolicy;
 use App\Policies\GalleryPolicy;
 use App\Policies\LeadershipStrcuturePolicy;
 use App\Policies\LeadershipStructurePolicy;
+use App\Policies\ProjectPolicy;
 use App\Policies\VisionMisionPolicy;
 use App\Providers\Guard\TokenGuard;
 use Illuminate\Foundation\Application;
@@ -29,7 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         Devision::class => DevisionPolicy::class,
         LeadershipStructure::class => LeadershipStructurePolicy::class,
         Cooperation::class => CooperationPolicy::class,
-        Gallery::class => GalleryPolicy::class
+        Gallery::class => GalleryPolicy::class,
+        Project::class => ProjectPolicy::class
     ];
 
     /**

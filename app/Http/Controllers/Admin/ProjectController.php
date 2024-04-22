@@ -10,6 +10,7 @@ use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -25,6 +26,9 @@ class ProjectController extends Controller
     }
     public function store(ProjectCreateRequest $request): RedirectResponse
     {
+        // check permission
+        Gate::authorize('create', Project::class);
+
         $data = $request->validated();
 
         if ($request->file('image')) {
@@ -41,6 +45,10 @@ class ProjectController extends Controller
 
     public function update(string $slug, ProjectUpdateRequest $request): RedirectResponse
     {
+        // check permission
+        $project = Project::where('slug', $slug)->firstOrFail();
+        Gate::authorize('update', $project);
+
         $data = $request->validated();
 
         if ($request->file('image')) {
@@ -62,6 +70,10 @@ class ProjectController extends Controller
 
     public function destroy(string $slug): RedirectResponse
     {
+        // check permission
+        $project = Project::where('slug', $slug)->firstOrFail();
+        Gate::authorize('delete', $project);
+
         DB::transaction(function () use ($slug) {
             $project = Project::where('slug', $slug)->firstOrFail();
             if ($project->image) {

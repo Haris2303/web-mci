@@ -162,6 +162,55 @@ class PermissionSeeder extends Seeder
         $permission->save();
         $permission->roles()->attach($role->id);
 
+        // permission project
+        $permission = new Permission();
+        $permission->name = 'viewAny-project';
+        $permission->description = 'Permizinan melihat semua project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'view-project';
+        $permission->description = 'Permizinan melihat detail project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'view-project';
+        $permission->description = 'Permizinan melihat detail project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'create-project';
+        $permission->description = 'Permizinan membuat project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'update-project';
+        $permission->description = 'Permizinan mengubah project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'delete-project';
+        $permission->description = 'Permizinan menghapus project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'restore-project';
+        $permission->description = 'Permizinan memulihkan project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'forceDelete-project';
+        $permission->description = 'Permizinan delete permanen project website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
 
         // role leader
         $role = Role::where('name', 'leader')->first();

@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\Project;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\ProjectSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,7 +18,7 @@ class ProjectTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
 
@@ -36,7 +37,7 @@ class ProjectTest extends TestCase
 
     public function testCreateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
 
@@ -54,7 +55,7 @@ class ProjectTest extends TestCase
 
     public function testCreateUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
         Storage::fake('project');
         $file = UploadedFile::fake()->image('project.jpg');
@@ -69,7 +70,7 @@ class ProjectTest extends TestCase
 
     public function testCreateSlugIsExists()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         Storage::fake('project');
 
@@ -88,7 +89,7 @@ class ProjectTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -109,7 +110,7 @@ class ProjectTest extends TestCase
 
     public function testUpdateInvalid()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
@@ -126,11 +127,11 @@ class ProjectTest extends TestCase
 
     public function testUpdateNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
-        $this->put("/projects/$project->slug", [
+        $this->put("/projects/salah", [
             'title' => 'judul baru',
             'description' => 'deskripsi baru',
             'oldImage' => $project->image
@@ -141,18 +142,18 @@ class ProjectTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
         $this->delete("/projects/$project->slug", headers: [
-            'Authorization' => 'admin2'
+            'Authorization' => 'admin'
         ])->assertStatus(302);
     }
 
     public function testDeleteNotFound()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $this->delete("/projects/salah", headers: [
             'Authorization' => 'admin2'
@@ -161,7 +162,7 @@ class ProjectTest extends TestCase
 
     public function testDeleteUnauthorized()
     {
-        $this->seed([RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, ProjectSeeder::class]);
 
         $project = Project::where('slug', 'judul-test')->firstOrFail();
 
