@@ -8,12 +8,16 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class AboutUsController extends Controller
 {
     public function upsert(Request $request): RedirectResponse
     {
+        // check permission
+        Gate::authorize('create', AboutUs::class);
+
         $credentials = $request->validate([
             'content' => ['required', 'string']
         ]);

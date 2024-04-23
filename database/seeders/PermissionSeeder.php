@@ -211,6 +211,19 @@ class PermissionSeeder extends Seeder
         $permission->save();
         $permission->roles()->attach($role->id);
 
+        // Permission About Us
+        $permission = new Permission();
+        $permission->name = 'viewAny-aboutUs';
+        $permission->description = 'Permizinan melihat tentang kami website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
+        $permission = new Permission();
+        $permission->name = 'create-aboutUs';
+        $permission->description = 'Permizinan membuat tentang kami website';
+        $permission->save();
+        $permission->roles()->attach($role->id);
+
 
         // role leader
         $role = Role::where('name', 'leader')->first();

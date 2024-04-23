@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AboutUs;
 use App\Models\Background;
 use App\Models\Cooperation;
 use App\Models\Devision;
@@ -9,6 +10,7 @@ use App\Models\Gallery;
 use App\Models\LeadershipStructure;
 use App\Models\Project;
 use App\Models\VisionMision;
+use App\Policies\AboutUsPolicy;
 use App\Policies\BackgroundPolicy;
 use App\Policies\CooperationPolicy;
 use App\Policies\DevisionPolicy;
@@ -32,7 +34,8 @@ class AuthServiceProvider extends ServiceProvider
         LeadershipStructure::class => LeadershipStructurePolicy::class,
         Cooperation::class => CooperationPolicy::class,
         Gallery::class => GalleryPolicy::class,
-        Project::class => ProjectPolicy::class
+        Project::class => ProjectPolicy::class,
+        AboutUs::class => AboutUsPolicy::class,
     ];
 
     /**
