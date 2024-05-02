@@ -35,13 +35,13 @@ class PermissionSeeder extends Seeder
         // permision devision
         $permission = new Permission();
         $permission->name = 'viewAny-devision';
-        $permission->description = 'Permizinan membuat devisi';
+        $permission->description = 'Permizinan melihat banyak devisi';
         $permission->save();
         $permission->roles()->attach($role->id);
 
         $permission = new Permission();
         $permission->name = 'view-devision';
-        $permission->description = 'Permizinan membuat devisi';
+        $permission->description = 'Permizinan melihat devisi';
         $permission->save();
         $permission->roles()->attach($role->id);
 

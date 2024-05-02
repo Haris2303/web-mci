@@ -2,9 +2,13 @@
 
 namespace App\Providers\Guard;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\GuardHelpers;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TokenGuard implements Guard
@@ -35,10 +39,6 @@ class TokenGuard implements Guard
         $token = $this->request->header('Authorization');
         if ($token) {
             $this->user = $this->provider->retrieveByCredentials(['remember_token' => $token]);
-        }
-
-        if ($this->user == null) {
-            return abort(401);
         }
 
         return $this->user;

@@ -4,17 +4,31 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('admin.login.index');
     }
@@ -24,11 +38,25 @@ class LoginController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $response = Http::post('http://localhost:8000/api/users/login', [
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
 
-        $request->session()->regenerate();
+        if ($response->status() === 401) {
+            $response = json_decode($response);
+            return response()->redirectTo('/administrator/login')->withErrors(['message' => $response->errors->message]);
+        }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($response->ok()) {
+            $response = json_decode($response);
+
+            Cookie::queue('X-TOKEN', $response->data->remember_token, 500);
+
+            return response()->redirectTo('/dashboard/admin');
+        }
+
+        return redirect('/kocak');
     }
 
     /**
@@ -42,6 +70,6 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->withoutCookie('X-TOKEN');
     }
 }

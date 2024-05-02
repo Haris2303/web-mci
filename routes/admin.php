@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/register', [\App\Http\Controllers\Admin\RegisterController::class, 'index'])
@@ -12,9 +11,15 @@ Route::post('/admins', [\App\Http\Controllers\Admin\RegisterController::class, '
     ->name('admin.store');
 Route::get('/administrator/login', [LoginController::class, 'create'])->middleware('guest');
 
-Route::post('/admins/login', [\App\Http\Controllers\Admin\LoginController::class, 'store'])
-    ->middleware(\App\Http\Middleware\LoginAdminMiddleware::class)
-    ->name('admin.login');
+Route::post('/admins/login', [\App\Http\Controllers\Admin\LoginController::class, 'store']);
+
+// dashboard index
+Route::middleware(['is_admin'])->group(function () {
+    Route::get('/dashboard/admin', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
+        ->name('dashboard.admin');
+    Route::delete('/admins/logout', [LoginController::class, 'destroy'])->name('admins.logout');
+});
+
 
 Route::middleware(['auth:token'])->group(function () {
     Route::get(

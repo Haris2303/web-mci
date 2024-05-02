@@ -1,0 +1,45 @@
+## User API
+
+### Register User
+POST http://localhost:8000/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "test",
+    "email": "test@example.com",
+    "password": "test12345",
+    "password_confirmation": "test12345"
+}
+
+### Login User
+POST http://localhost:8000/api/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "test@example.com",
+    "password": "test12345"
+}
+
+### Get Current User
+GET http://localhost:8000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: beaf5347-a74c-4272-8f1b-3832ff469cd7
+
+### Update Current User
+PATCH http://localhost:8000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: beaf5347-a74c-4272-8f1b-3832ff469cd7
+
+{
+    "name": "test baru"
+}
+
+### Logout Current User API
+DELETE http://localhost:8000/api/users/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: beaf5347-a74c-4272-8f1b-3832ff469cd7

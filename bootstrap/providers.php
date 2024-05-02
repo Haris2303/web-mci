@@ -8,5 +8,6 @@ return [
     App\Providers\DevisionServiceProvider::class,
     App\Providers\GalleryServiceProvider::class,
     App\Providers\ProjectServiceProvider::class,
+    App\Providers\UserServiceProvider::class,
     App\Providers\VisionMisionServiceProvider::class,
 ];
