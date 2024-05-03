@@ -18,6 +18,11 @@ Route::middleware(['is_admin'])->group(function () {
     Route::get('/dashboard/admin', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
         ->name('dashboard.admin');
     Route::delete('/admins/logout', [LoginController::class, 'destroy'])->name('admins.logout');
+    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])
+        ->name('users.destroy');
 });
 
 

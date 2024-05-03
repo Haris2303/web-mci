@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\PermissionSeeder;
@@ -69,17 +70,23 @@ class UserTest extends TestCase
 
     public function testRegisterSuccess()
     {
-        $this->seed([RoleSeeder::class, PermissionSeeder::class]);
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
+
+        $role = Role::where('name', 'member')->first();
 
         $this->post('/api/users', [
-            'name' => 'Admin Test',
-            'email' => 'admin@example.com',
-            'password' => 'admin12345',
-            'password_confirmation' => 'admin12345'
+            'name' => 'Test dua',
+            'email' => 'test2@example.com',
+            'password' => 'test12345',
+            'password_confirmation' => 'test12345',
+            'role_id' => $role->id
+        ], [
+            'Accept' => 'application/json',
+            'Authorization' => 'admin'
         ])->assertStatus(201)->assertJson([
             'data' => [
-                'name' => 'Admin Test',
-                'email' => 'admin@example.com',
+                'name' => 'Test dua',
+                'email' => 'test2@example.com',
                 'is_active' => 1
             ]
         ]);
@@ -238,5 +245,22 @@ class UserTest extends TestCase
         ])->assertStatus(401)->assertJson([
             'message' => 'Unauthenticated.'
         ]);
+    }
+
+    public function testDeleteUser()
+    {
+        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
+
+        $user = User::where('email', 'member@example.com')->first();
+
+        $this->delete(uri: '/api/users/' . $user->id, headers: [
+            'accept' => 'application/json',
+            'Authorization' => 'admin'
+        ])->assertStatus(200)->assertJson([
+            'data' => true
+        ]);
+
+        $user = User::where('email', 'member@example.com')->first();
+        $this->assertNull($user);
     }
 }

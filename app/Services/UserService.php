@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 
 interface UserService
 {
@@ -18,4 +19,6 @@ interface UserService
     function update(UserUpdateRequest $request): UserResource;
 
     function logout(): bool;
+
+    function delete(int $id): bool;
 }

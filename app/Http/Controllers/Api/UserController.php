@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,6 +53,14 @@ class UserController extends Controller
     public function logout(): JsonResponse
     {
         $response = $this->userService->logout();
+        return response()->json([
+            'data' => $response
+        ]);
+    }
+
+    public function destroy(User $user): JsonResponse
+    {
+        $response = $this->userService->delete($user->id);
         return response()->json([
             'data' => $response
         ]);

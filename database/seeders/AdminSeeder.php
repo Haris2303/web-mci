@@ -43,5 +43,15 @@ class AdminSeeder extends Seeder
         $user->is_active = true;
         $user->save();
         $user->roles()->attach($roles->id);
+
+        $roles = Role::where('name', 'member')->first();
+        $user = new User();
+        $user->name = 'Member UKM';
+        $user->email = 'member@example.com';
+        $user->password = Hash::make('member12345');
+        $user->remember_token = 'member';
+        $user->is_active = true;
+        $user->save();
+        $user->roles()->attach($roles->id);
     }
 }

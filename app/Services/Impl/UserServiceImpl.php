@@ -6,10 +6,12 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -54,9 +56,15 @@ class UserServiceImpl implements UserService
         }
 
         $user = new User($data);
-        $user->password = Hash::make($data['password']);
-        $user->is_active = true;
-        $user->save();
+
+        DB::transaction(function () use ($data, $user) {
+            $user->password = Hash::make($data['password']);
+            $user->is_active = true;
+            $user->save();
+
+            $user->roles()->attach($data['role_id']);
+        });
+
 
         return new UserResource($user);
     }
@@ -94,6 +102,18 @@ class UserServiceImpl implements UserService
 
         $user->remember_token = null;
         $user->save();
+
+        return true;
+    }
+
+    public function delete(int $id): bool
+    {
+        $user = User::where('id', $id)->first();
+
+        DB::transaction(function () use ($user) {
+            $user->roles()->detach($user->roles[0]->id);
+            $user->delete();
+        });
 
         return true;
     }
