@@ -2,7 +2,7 @@ create database web_mci
 
 use web_mci
 
-show tables
+show databases
 
 select * from users
 
