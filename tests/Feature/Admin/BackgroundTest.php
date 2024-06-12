@@ -21,33 +21,37 @@ class BackgroundTest extends TestCase
     {
         $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
+        $user = User::where('email', 'admin@example.com')->firstOrFail();
+
+        Auth::login($user);
+
         $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
-        ], [
-            "Authorization" => "admin"
         ]);
 
         $this->assertTrue(Gate::allows('create', Background::class));
 
         $response->assertStatus(302);
-        $response->assertRedirect('/dashboard/background');
+        $response->assertRedirect('/background');
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('success', 'Data berhasil');
     }
 
-    public function testUpdateUnauthorized(): void
+    public function testUpdateForbidden(): void
     {
         $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
 
+        $user = User::where('email', 'ketua@example.com')->firstOrFail();
+
+        Auth::login($user);
+
         $response = $this->patch('/background', [
             'content' => 'Ini latar belakang',
-        ], [
-            "Authorization" => "salah"
         ]);
 
         Log::info(json_encode($response, JSON_PRETTY_PRINT));
 
-        $response->assertStatus(401);
+        $response->assertStatus(403);
         $response->assertSessionHasNoErrors();
     }
 
@@ -55,29 +59,17 @@ class BackgroundTest extends TestCase
     {
         $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
 
+        $user = User::where('email', 'admin@example.com')->firstOrFail();
+
+        Auth::login($user);
+
         $response = $this->patch('/background', [
             'content' => '',
-        ], [
-            "Authorization" => "admin"
         ]);
 
         Log::info(json_encode($response, JSON_PRETTY_PRINT));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
-    }
-
-    public function testUpdateWithoutPermission(): void
-    {
-        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class, BackgroundSeeder::class]);
-
-        $response = $this->patch('/background', [
-            'content' => 'Ini adalah latar belakang',
-        ], [
-            "Authorization" => "ketua_ukm"
-        ]);
-
-        $response->assertStatus(403);
-        $response->assertSessionHasNoErrors();
     }
 }

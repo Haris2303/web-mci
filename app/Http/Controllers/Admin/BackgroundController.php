@@ -24,7 +24,7 @@ class BackgroundController extends Controller
 
     public function create(): View
     {
-        return view('admin.background.create');
+        return view('admin.background.create', ['content' => Background::first()->content]);
     }
 
     public function upsert(BackgroundRequest $request): RedirectResponse
@@ -41,6 +41,6 @@ class BackgroundController extends Controller
             $this->backgroundService->upsert($request);
         });
 
-        return redirect()->to('/dashboard/background')->with('success', 'Data berhasil');
+        return redirect()->to('/background')->with('success', 'Data berhasil disimpan');
     }
 }

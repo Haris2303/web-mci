@@ -58,6 +58,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->withCookie('X-TOKEN');
     }
 }

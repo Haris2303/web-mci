@@ -22,6 +22,7 @@ use App\Policies\VisionMisionPolicy;
 use App\Providers\Guard\TokenGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 

@@ -34,12 +34,12 @@ Route::middleware(['auth'])->group(function () {
         ->name('users.destroy');
 });
 
-Route::middleware(['auth:token'])->group(function () {
+Route::middleware(['auth', 'is_admin'])->group(function () {
     // Background
     Route::get(
-        '/dashboard/background',
+        '/background',
         [\App\Http\Controllers\Admin\BackgroundController::class, 'create']
-    )->name('dashboard.background.create');
+    )->name('background.create');
 
     Route::patch(
         '/background',
