@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     private UserService $userService;
 
@@ -38,25 +38,13 @@ class LoginController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $response = Http::post('http://localhost:8000/api/users/login', [
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
+        $credentials = $request->validated();
 
-        if ($response->status() === 401) {
-            $response = json_decode($response);
-            return response()->redirectTo('/administrator/login')->withErrors(['message' => $response->errors->message]);
-        }
+        $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
-        if ($response->ok()) {
-            $response = json_decode($response);
+        Auth::login($user);
 
-            Cookie::queue('X-TOKEN', $response->data->remember_token, 500);
-
-            return response()->redirectTo('/dashboard/admin');
-        }
-
-        return redirect('/kocak');
+        return redirect()->to('/');
     }
 
     /**
@@ -70,6 +58,6 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->withoutCookie('X-TOKEN');
+        return redirect('/');
     }
 }

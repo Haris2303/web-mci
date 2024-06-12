@@ -1,4 +1,4 @@
-<x-dashboard-layout :title="$title">
+<x-app-layout :title="$title">
 
     {{-- alert success --}}
     @if (session('success'))
@@ -156,4 +156,4 @@
     </div>
 
 
-</x-dashboard-layout>
+</x-app-layout>

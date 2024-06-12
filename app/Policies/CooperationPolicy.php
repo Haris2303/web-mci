@@ -10,7 +10,7 @@ class CooperationPolicy
 {
     public function before(User $user, string $ability)
     {
-        if ($user->roles[0]->name === 'superadmin') {
+        if ($user->roles[0]->name === 'admin') {
             return true;
         }
     }

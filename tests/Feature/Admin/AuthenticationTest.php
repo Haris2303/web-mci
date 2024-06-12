@@ -28,7 +28,6 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect('/dashboard/admin');
         $response->assertSessionHasNoErrors();
 
-
         $this->get('/dashboard/admin', [
             'Authorization' => Auth::user()->getRememberToken()
         ])->assertStatus(200)->assertSeeText('Flowbite');

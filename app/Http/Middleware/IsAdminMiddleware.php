@@ -44,7 +44,7 @@ class IsAdminMiddleware
         if ($authenticate) {
             return $next($request);
         } else {
-            return redirect()->to('/administrator/login');
+            return redirect()->to('/login');
         }
     }
 }

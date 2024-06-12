@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('admin.login.index');
     }
 
     /**
@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         Log::info($user->getRememberToken());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: true));
     }
 
     /**

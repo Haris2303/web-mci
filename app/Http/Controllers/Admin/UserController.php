@@ -49,26 +49,7 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => $request->cookie('X-TOKEN')
-        ])->post('http://localhost:8000/api/users', $request);
-
-        if ($response->badRequest()) {
-            $response = json_decode($response);
-            return redirect()->to('/users/create')->withErrors([
-                'name' => $response->errors->name ?? '',
-                'email' => $response->errors->email ?? '',
-                'password' => $response->errors->password ?? '',
-                'role_id' => $response->errors->role_id ?? '',
-            ]);
-        }
-
-        if ($response->status() === 201) {
-            return redirect()->to('/users')->with('success', 'Data user berhasil terdaftar!');
-        }
-
-        abort(401);
+        return redirect()->to('/users')->with('success', 'Data user berhasil terdaftar!');
     }
 
     /**
@@ -100,15 +81,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => Cookie::get('X-TOKEN')
-        ])->delete('http://localhost:8000/api/users/' . $user->id);
-
-        if ($response->ok()) {
-            return redirect()->to('/users')->with('success', 'Data user berhasil dihapus!');
-        }
-
-        abort(401);
+        return redirect()->to('/users')->with('success', 'Data user berhasil dihapus!');
     }
 }
