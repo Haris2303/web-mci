@@ -47,10 +47,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     )->name('background.upsert');
 
     // Vision Mission
+    Route::get('/vision-mision', [\App\Http\Controllers\Admin\VisionMisionController::class, 'create'])->name('vision-mision.create');
+
     Route::patch(
         '/vision-mision',
         [\App\Http\Controllers\Admin\VisionMisionController::class, 'upsert']
-    )->name('visionmision.upsert');
+    )->name('vision-mision.upsert');
 
     // Project
     Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])
