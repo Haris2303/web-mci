@@ -65,8 +65,16 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->name('project.delete');
 
     // Devision
+    Route::get('/devisions', [\App\Http\Controllers\Admin\DevisionController::class, 'index'])->name('devision.index');
+
+    Route::get('/devisions/create', [\App\Http\Controllers\Admin\DevisionController::class, 'create'])->name('devision.create');
+
+    Route::get('/devisions/edit/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'edit'])
+        ->where('id', '[0-9]+')
+        ->name('devision.edit');
+
     Route::post('/devisions', [\App\Http\Controllers\Admin\DevisionController::class, 'store'])
-        ->name('devision.create');
+        ->name('devision.store');
 
     Route::put('/devisions/{id}', [\App\Http\Controllers\Admin\DevisionController::class, 'update'])
         ->where('id', '[0-9]+')
