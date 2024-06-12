@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\LeadershipStructure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Storage;
 
 class LeadershipStructureController extends Controller
 {
+    public function index(): View
+    {
+        return view('admin.leadership-structure.index', [
+            'leadership_structure' => LeadershipStructure::first() ?? ''
+        ]);
+    }
+
     public function upsert(Request $request): RedirectResponse
     {
         Gate::authorize('create', LeadershipStructure::class);
@@ -27,16 +35,20 @@ class LeadershipStructureController extends Controller
             $credentials['image'] = $request->file('image')->store('leadership_structure');
         }
 
+        $old_data = LeadershipStructure::first();
+
         DB::transaction(function () use ($credentials) {
+
             $leadership_structure = LeadershipStructure::query()->updateOrCreate([], [
                 'image' => $credentials['image'],
                 'description' => $credentials['description'],
                 'user_id' => Auth::id()
             ]);
             $leadership_structure->save();
-            Log::info($leadership_structure);
         });
 
-        return redirect()->to('/dashboard/leadership-structures')->with('success', 'Data berhasil diubah');
+        Storage::delete($old_data->image);
+
+        return redirect()->to('/leadership-structure')->with('success', 'Data berhasil diubah');
     }
 }

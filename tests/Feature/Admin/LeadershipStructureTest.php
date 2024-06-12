@@ -22,15 +22,17 @@ class LeadershipStructureTest extends TestCase
     {
         $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
 
+        $user = User::where('email', 'admin@example.com')->first();
+
+        Auth::login($user);
+
         Storage::fake('leadership');
 
         $file = UploadedFile::fake()->image('leadership.jpg');
 
-        $this->patch('/leadership_structures', [
+        $this->patch('/leadership-structures', [
             'image' => $file,
             'description' => 'Ini adalah deskripsi'
-        ], [
-            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
 
         $this->assertTrue(Gate::allows('create', LeadershipStructure::class));

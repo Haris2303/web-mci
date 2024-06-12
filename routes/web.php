@@ -16,7 +16,7 @@ Route::post('/admins', [\App\Http\Controllers\Admin\RegisterController::class, '
     ->middleware('guest')
     ->name('admin.store');
 
-Route::post('/admins/login', [\App\Http\Controllers\Admin\AuthController::class, 'store']);
+Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'store']);
 
 // dashboard index
 Route::middleware(['auth'])->group(function () {
@@ -77,8 +77,11 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->name('devision.delete');
 
     // Leadership Structure
-    Route::patch('/leadership_structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
-        ->name('leadership-structre.upsert');
+    Route::get('/leadership-structure', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'index'])
+        ->name('leadership-structure.index');
+
+    Route::patch('/leadership-structures', [\App\Http\Controllers\Admin\LeadershipStructureController::class, 'upsert'])
+        ->name('leadership-structure.upsert');
 
     // Gallery
     Route::post('/galleries', [\App\Http\Controllers\Admin\GalleryController::class, 'store'])

@@ -24,7 +24,9 @@ class BackgroundController extends Controller
 
     public function create(): View
     {
-        return view('admin.background.create', ['content' => Background::first()->content]);
+        $background = Background::first();
+
+        return view('admin.background.create', ['background' => $background]);
     }
 
     public function upsert(BackgroundRequest $request): RedirectResponse
