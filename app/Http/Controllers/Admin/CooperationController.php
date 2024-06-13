@@ -38,7 +38,7 @@ class CooperationController extends Controller
             Log::info($cooperation);
         });
 
-        return redirect()->to('/dashboard/cooperations')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->to('/cooperations')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function update(int $id, CooperationRequest $request): RedirectResponse
@@ -62,7 +62,7 @@ class CooperationController extends Controller
             Log::info($cooperation);
         });
 
-        return redirect()->to('/dashboard/cooperations')->with('success', 'Data berhasil diubah');
+        return redirect()->to('/cooperations')->with('success', 'Data berhasil diubah');
     }
 
     public function destroy(int $id): RedirectResponse
@@ -76,6 +76,6 @@ class CooperationController extends Controller
             Log::info($cooperation);
         });
 
-        return redirect()->to('/dashboard/cooperations')->with('success', 'Data berhasil dihapus');
+        return redirect()->to('/cooperations')->with('success', 'Data berhasil dihapus');
     }
 }
