@@ -17,9 +17,12 @@ class LeadershipStructureController extends Controller
 {
     public function index(): View
     {
-        return view('admin.leadership-structure.index', [
+        $data = [
+            'title' => 'Struktur UKM',
             'leadership_structure' => LeadershipStructure::first() ?? ''
-        ]);
+        ];
+
+        return view('admin.leadership-structure.index', $data);
     }
 
     public function upsert(Request $request): RedirectResponse

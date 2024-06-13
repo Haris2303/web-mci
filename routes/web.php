@@ -54,9 +54,15 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         [\App\Http\Controllers\Admin\VisionMisionController::class, 'upsert']
     )->name('vision-mision.upsert');
 
-    // Project
+    // Project / Work Program
+    Route::get('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'index'])->name('project.index');
+
+    Route::get('/project/create', [\App\Http\Controllers\Admin\ProjectController::class, 'create'])->name('project.create');
+
+    Route::get('/project/edit/{slug}', [\App\Http\Controllers\Admin\ProjectController::class, 'edit'])->name('project.edit');
+
     Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])
-        ->name('project.create');
+        ->name('project.store');
 
     Route::put('/projects/{slug}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])
         ->name('project.update');

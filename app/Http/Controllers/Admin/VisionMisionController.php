@@ -22,7 +22,12 @@ class VisionMisionController extends Controller
 
     public function create(): View
     {
-        return view('admin.vision-mision.create', ['content' => VisionMision::first()->content ?? "Kosong"]);
+        $data = [
+            'title' => 'Visi Misi',
+            'content' => VisionMision::first()->content ?? "Kosong"
+        ];
+
+        return view('admin.vision-mision.create', $data);
     }
 
     public function upsert(VisionMisionRequest $request)

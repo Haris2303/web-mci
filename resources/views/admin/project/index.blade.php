@@ -1,5 +1,11 @@
 <x-app-layout :title="$title">
 
+    <div class="mb-10">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Kelola Program Kerja') }}
+        </h2>
+    </div>
+
     {{-- alert success --}}
     @if (session('success'))
         <x-alert.success>{{ session('success') }}</x-alert.success>
@@ -27,44 +33,24 @@
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                         <li>
                             <a href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Project
+                                UKM</a>
                         </li>
                         <li>
                             <a href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate
-                                account</a>
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Project
+                                Devisi</a>
                         </li>
                     </ul>
-                    <div class="py-1">
-                        <a href="#"
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
-                            User</a>
-                    </div>
                 </div>
-                {{-- button add user --}}
+                {{-- button add --}}
                 <div>
-                    <a href="{{ route('users.create') }}"
+                    <a href="{{ route('project.create') }}"
                         class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Add
-                        User</a>
+                        Project</a>
                 </div>
             </div>
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                </div>
-                <input type="text" id="table-search-users"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search for users">
-            </div>
+            <x-search :placeholder="__('Search for projects..')" />
         </div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -77,13 +63,10 @@
                         </div>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Name
+                        Gambar
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Position
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Status
+                        Judul
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Action
@@ -91,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @foreach ($projects as $project)
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="w-4 p-4">
@@ -101,25 +84,20 @@
                                 <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                             </div>
                         </td>
-                        <th scope="row"
-                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-1.jpg"
-                                alt="Jese image">
+                        <td>
+                            <img class="w-20" src="{{ asset('storage/' . $project->image) }}" alt="Gambar">
+                        </td>
+                        <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="ps-3">
-                                <div class="text-base font-semibold">{{ $user->name }}</div>
-                                <div class="font-normal text-gray-500">{{ $user->email }}</div>
+                                <div class="text-base font-semibold">{{ $project->title }}</div>
                             </div>
                         </th>
                         <td class="px-6 py-4">
-                            {{ $user->roles[0]->name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                            <div class="inline">
+                                <a href="{{ route('project.edit', $project->slug) }}"
+                                    class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Edit</a>
                             </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <form action="/users/{{ $user->id }}" method="post">
+                            <form class="inline" action="{{ route('project.delete', $project->slug) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button

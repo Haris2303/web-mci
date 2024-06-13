@@ -3,13 +3,16 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Project;
+use App\Models\User;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\ProjectSeeder;
 use Database\Seeders\RoleSeeder;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -18,7 +21,11 @@ class ProjectTest extends TestCase
 {
     public function testCreateSuccess()
     {
-        $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
+        // $this->seed([RoleSeeder::class, PermissionSeeder::class, AdminSeeder::class]);
+
+        $user = User::where('email', 'admin@example.com')->first();
+
+        Auth::login($user);
 
         Storage::fake('project');
 
@@ -27,11 +34,8 @@ class ProjectTest extends TestCase
         $this->post('/projects', [
             'image' => $file,
             'title' => 'Judul Project UKM',
-            'slug' => 'judul-project-ukm',
             'description' => 'Deskripsi project',
             'type' => 'UKM'
-        ], [
-            'Authorization' => 'admin'
         ])->assertStatus(302)->assertSessionHasNoErrors();
     }
 

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ProjectCreateRequest;
 use App\Http\Requests\Admin\ProjectUpdateRequest;
 use App\Models\Project;
 use App\Services\ProjectService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,26 @@ class ProjectController extends Controller
     {
         $this->projectService = $projectService;
     }
+
+    public function index(): View
+    {
+        $data = [
+            'title' => 'Program Kerja',
+            'projects' => Project::all()
+        ];
+
+        return view('admin.project.index', $data);
+    }
+
+    public function create(): View
+    {
+        $data = [
+            'title' => 'Create Project Kerja',
+        ];
+
+        return view('admin.project.create', $data);
+    }
+
     public function store(ProjectCreateRequest $request): RedirectResponse
     {
         // check permission
@@ -40,7 +61,17 @@ class ProjectController extends Controller
             Log::info($project);
         });
 
-        return redirect()->to('/dashboard/projects')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->to('/projects')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function edit(string $slug): View
+    {
+        $data = [
+            'title' => 'Edit Project Kerja',
+            'project' => Project::where('slug', $slug)->first()
+        ];
+
+        return view('admin.project.edit', $data);
     }
 
     public function update(string $slug, ProjectUpdateRequest $request): RedirectResponse
@@ -54,7 +85,6 @@ class ProjectController extends Controller
         if ($request->file('image')) {
             // if image is change
             if ($request->oldImage) {
-                Log::info($request->oldImage);
                 Storage::delete($request->oldImage);
             }
             $data['image'] = $request->file('image')->store('projects');
@@ -65,7 +95,7 @@ class ProjectController extends Controller
             Log::info($project);
         });
 
-        return redirect()->to('/dashboard/projects')->with('success', 'Data berhasil diubah');
+        return redirect()->to('/projects')->with('success', 'Data berhasil diubah');
     }
 
     public function destroy(string $slug): RedirectResponse
@@ -82,6 +112,6 @@ class ProjectController extends Controller
             $this->projectService->delete($slug);
         });
 
-        return redirect()->to('/dashboard/projects')->with('success', 'Data berhasil dihapus');
+        return redirect()->to('/projects')->with('success', 'Data berhasil dihapus');
     }
 }

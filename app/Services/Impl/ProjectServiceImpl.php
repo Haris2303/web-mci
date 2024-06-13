@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ProjectUpdateRequest;
 use App\Services\ProjectService;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProjectServiceImpl implements ProjectService
 {
@@ -15,7 +16,7 @@ class ProjectServiceImpl implements ProjectService
         // Implementasi untuk membuat project baru
         $project = new Project();
         $project->image = $data['image'] ?? null;
-        $project->slug = $data['slug'];
+        $project->slug = Str::slug($data['title']);
         $project->title = $data['title'];
         $project->description = $data['description'];
         $project->type = $data['type'];

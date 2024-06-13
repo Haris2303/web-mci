@@ -23,7 +23,7 @@ class ProjectCreateRequest extends FormRequest
     {
         return [
             'image' => ['file', 'image', 'max:1024'],
-            'slug' => ['required', 'unique:projects'],
+            'slug' => ['string', 'unique:projects'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'type' => ['required', 'string']
