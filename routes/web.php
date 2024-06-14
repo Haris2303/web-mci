@@ -110,7 +110,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->name('gallery.delete');
 
     // About Us
-    Route::patch('/about_us', [\App\Http\Controllers\Admin\AboutUsController::class, 'upsert'])->name('about-us.create');
+    Route::get('/about-us', [\App\Http\Controllers\Admin\AboutUsController::class, 'index'])->name('about-us.index');
+
+    Route::patch('/about-us', [\App\Http\Controllers\Admin\AboutUsController::class, 'upsert'])->name('about-us.upsert');
 
     // Cooperations
     Route::post('/cooperations', [\App\Http\Controllers\Admin\CooperationController::class, 'store'])
