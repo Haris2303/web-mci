@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GalleryRequest;
 use App\Models\Gallery;
 use App\Services\GalleryService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,25 @@ class GalleryController extends Controller
     public function __construct(GalleryService $galleryService)
     {
         $this->galleryService = $galleryService;
+    }
+
+    public function index(): View
+    {
+        $data = [
+            'title' => 'Gallery',
+            'galleries' => Gallery::all()
+        ];
+
+        return view('admin.gallery.index', $data);
+    }
+
+    public function create(): View
+    {
+        $data = [
+            'title' => 'Create Gallery',
+        ];
+
+        return view('admin.gallery.create', $data);
     }
 
     public function store(GalleryRequest $request): RedirectResponse
@@ -38,7 +58,7 @@ class GalleryController extends Controller
             Log::info($gallery);
         });
 
-        return redirect()->to('/dashboard/galleries')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->to('/galleries')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function destroy(int $id): RedirectResponse
@@ -52,6 +72,6 @@ class GalleryController extends Controller
             Log::info($gallery);
         });
 
-        return redirect()->to('/dashboard/galleries')->with('success', 'Data berhasil dihapus');
+        return redirect()->to('/galleries')->with('success', 'Data berhasil dihapus');
     }
 }

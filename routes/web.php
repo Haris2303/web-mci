@@ -98,8 +98,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->name('leadership-structure.upsert');
 
     // Gallery
+    Route::get('/galleries', [\App\Http\Controllers\Admin\GalleryController::class, 'index'])->name('gallery.index');
+
+    Route::get('/galleries/create', [\App\Http\Controllers\Admin\GalleryController::class, 'create'])->name('gallery.create');
+
     Route::post('/galleries', [\App\Http\Controllers\Admin\GalleryController::class, 'store'])
-        ->name('gallery.create');
+        ->name('gallery.store');
 
     Route::delete('/galleries/{id}', [\App\Http\Controllers\Admin\GalleryController::class, 'destroy'])
         ->where('id', '[0-9]+')
