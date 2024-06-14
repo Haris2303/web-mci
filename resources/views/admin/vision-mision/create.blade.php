@@ -21,6 +21,7 @@
                 <div>
                     <x-input-label for="content" :value="__('Content')" />
                     <x-tinymce.editor class="mt-1 block w-full" :value="__($content)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('content')" />
                 </div>
 
                 <div class="flex items-center gap-4">

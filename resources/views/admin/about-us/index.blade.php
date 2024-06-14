@@ -26,6 +26,7 @@
                 <div>
                     <x-input-label for="content" :value="__('Content')" class="mb-2" />
                     <x-tinymce.editor class="mt-1 block w-full" :value="__(is_null($about_us) ? '' : $about_us->content)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('content')" />
                 </div>
 
                 <div class="flex items-center gap-4">

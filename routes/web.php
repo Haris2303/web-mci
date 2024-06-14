@@ -115,6 +115,14 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::patch('/about-us', [\App\Http\Controllers\Admin\AboutUsController::class, 'upsert'])->name('about-us.upsert');
 
     // Cooperations
+    Route::get('/cooperations', [\App\Http\Controllers\Admin\CooperationController::class, 'index'])->name('cooperation.index');
+
+    Route::get('/cooperations/create', [\App\Http\Controllers\Admin\CooperationController::class, 'create'])->name('cooperation.create');
+
+    Route::get('/cooperations/{id}', [\App\Http\Controllers\Admin\CooperationController::class, 'edit'])
+        ->where('id', '[0-9]+')
+        ->name('cooperation.edit');
+
     Route::post('/cooperations', [\App\Http\Controllers\Admin\CooperationController::class, 'store'])
         ->name('cooperation.store');
 

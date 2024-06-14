@@ -22,9 +22,8 @@ class CooperationServiceImpl implements CooperationService
 
     public function update(int $id, array $data): Cooperation
     {
-        $cooperation = Cooperation::where('id', $id)->firstOrFail();
-        $cooperation->image = $data['image'];
-        $cooperation->content = $data['content'];
+        $cooperation = Cooperation::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $cooperation->fill($data);
         $cooperation->save();
 
         return $cooperation;
